@@ -1,0 +1,13 @@
+<h1>Cart {{cart._id}}</h1>
+
+{{#each products}}
+    <h4>{{id_prod.title}}</h4>
+    <p>{{id_prod.description}}</p>
+    <p>{{id_prod.price}}</p>
+    <p>{{id_prod.thumbnail}}</p>
+    <p>{{id_prod.code}}</p>
+    <p>{{id_prod.stock}}</p>
+    <p>{{id_prod.category}}</p>
+    <button onclick="deleteProduct({{_id}})">delete</button>
+    <hr>
+{{/each}}

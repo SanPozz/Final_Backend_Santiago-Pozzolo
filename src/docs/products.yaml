@@ -1,0 +1,217 @@
+paths:
+
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags: 
+        - Product
+      responses: 
+        "200":
+          description: Productos obtenidos
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Producto"
+        "404":
+            description: No se encontraron los productos
+
+    post:
+      summary: Crear producto
+      tags:
+        - Product
+      responses:
+        "200":
+          description: Producto creado exitosamente
+        "404":
+          description: Error al crear el producto
+
+      requestBody:
+        required: true
+        content:
+          aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/createProduct"
+
+
+  /api/products/{pid}:
+      get:
+        summary: Obtiene un producto por ID
+        tags: 
+          - Product
+        parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se solicita
+          schema:
+            $type: String
+        responses: 
+          "200":
+            description: Producto obtenido
+          "400":
+            description: ID Invalido
+          "404":
+            description: Producto inexistente
+      put:
+        summary: Actualiza un producto por ID
+        tags:
+          - Product
+        parameters:
+          - name: pid
+            in: path
+            required: true
+            description: ID del producto que se quiere actualizar
+            schema:
+              type: string
+          - name: body
+            in: body
+            required: true
+            description: Datos del producto a actualizar
+            schema:
+              $ref: "#components/requestBodies/updateProduct"
+        responses:
+          "200":
+            description: Producto actualizado exitosamente
+          "404":
+            description: No se encontró el producto por ese ID
+          "500":
+            description: Error interno del servidor
+      delete:
+        summary: Elimina un producto por ID
+        tags:
+          - Product
+        parameters:
+          - name: pid
+            in: path
+            required: true
+            description: ID del producto que se quiere eliminar
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Producto eliminado exitosamente
+          "401":
+            description: Bad request
+          "404":
+            description: No se encontró el producto por ese ID
+
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autogenerado por Mongo
+        title: 
+          type: string
+          description: Nombre del producto
+        thumbnail:
+          type: array
+          description: Imagenes del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        stock: 
+          type: number
+          description: Cantidad disponible del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código de referencia del producto
+        status:
+          type: boolean
+          description: true or false
+        category: 
+          type: string
+          description: Categoría del producto
+        owner:
+          type: string
+          description: Creador del producto
+      example:
+        _id: ObjectId("64cff6b08df0d0bd14dd22a1")
+        title: Samnsung TV
+        thumbnail: [urls]
+        description: Samsung TV 50 pulgadas
+        stock: 500
+        price: 2000
+        code: abc123
+        status: true
+        category: TV
+        owner: Admin
+  requestBodies:
+    createProduct:
+      type: object
+      properties:
+        title: 
+          type: string
+          description: Nombre del producto
+        thumbnail:
+          type: array
+          description: Imagenes del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        stock: 
+          type: number
+          description: Cantidad disponible del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código de referencia del producto
+        category:
+          type: string
+          description: Categoría del producto
+      example:
+        title: Samnsung TV
+        thumbnail: [urls]
+        description: Samsung TV 50 pulgadas
+        stock: 500
+        price: 2000
+        code: abc123
+        category: TV
+    updateProduct:
+      type: object
+      properties:
+        title: 
+          type: string
+          description: Nombre del producto
+        thumbnail:
+          type: array
+          description: Imagenes del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        stock: 
+          type: number
+          description: Cantidad/stock disponible del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código de referencia del producto
+        category:
+          type: string
+          description: Categoría del Producto
+        owner:
+          type: string
+          description: Admin o Premium
+      example:
+        title: Samnsung TV
+        thumbnail: [urls]
+        description: Samsung TV 50 pulgadas
+        stock: 500
+        price: 2000
+        code: abc123
+        category: TV
+        owner: Admin
+      

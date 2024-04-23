@@ -1,0 +1,12 @@
+{{#each products}}
+    <h4>{{title}}</h4>
+    <p>{{description}}</p>
+    <p>{{price}}</p>
+    <img src="{{thumbnail}}" alt="">
+    {{!-- <p>{{thumbnail}}</p> --}}
+    <p>{{code}}</p>
+    <p>{{stock}}</p>
+    <p>{{category}}</p>
+    <button data-id="{{id}}" onclick="addProduct(this.dataset.id)">add to cart</button>
+    <hr>
+{{/each}}

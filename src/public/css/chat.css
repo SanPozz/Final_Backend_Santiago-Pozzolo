@@ -1,0 +1,47 @@
+.messages-div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 53.8rem; /* Ajusta la altura según tu preferencia */
+    overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
+}
+
+/* Estilos para los mensajes en el chat */
+/* Estilos para los mensajes en el chat */
+.message {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 1rem; /* Tamaño de fuente de 1 rem */
+}
+
+/* Estilos para el contenedor de entrada de mensaje */
+.input-div {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilos para el campo de entrada de mensaje */
+#input-message {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Estilos para el botón de enviar mensaje */
+#button-send-message {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Cambia el color del botón cuando se pasa el cursor por encima */
+#button-send-message:hover {
+    background-color: #0056b3;
+}

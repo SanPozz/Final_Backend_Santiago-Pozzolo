@@ -1,0 +1,41 @@
+[
+    {
+        "title": "Product 1",
+        "description": "Description",
+        "price": 300,
+        "thumbnail": "Thumbnail",
+        "code": "1234",
+        "stock": 10,
+        "category": "Category",
+        "id": 1
+    },
+    {
+        "title": "Product 5",
+        "description": "Description 5",
+        "price": 200,
+        "thumbnail": [],
+        "code": "131231231dasd12e",
+        "stock": 9,
+        "category": "Category 56",
+        "id": 2
+    },
+    {
+        "title": "Product 3",
+        "description": "Description",
+        "price": 600,
+        "thumbnail": "Thumbnail",
+        "code": "131212313123",
+        "stock": 10,
+        "category": "Category",
+        "id": 3
+    },
+    {
+        "title": "Prueba",
+        "description": "test",
+        "price": "213",
+        "code": "asaddd123",
+        "stock": "34",
+        "category": "Pruebas",
+        "id": 4
+    }
+]

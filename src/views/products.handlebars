@@ -1,0 +1,40 @@
+
+
+<h2>Products:</h2>
+<hr>
+<h3>Welcome: {{user.first_name}} {{user.last_name}}</h3>
+<br>
+<h3>Email: {{user.email}}</h3>
+<h3>Age: {{user.age}}</h3>
+<h3>Role: {{user.rol}}</h3>
+<br>
+<hr>
+<br>
+{{#each products}}
+    <div>
+        <h4>{{title}}</h4>
+        <p>{{description}}</p>
+        <p>{{price}}</p>
+        {{!-- <p>{{thumbnail}}</p> --}}
+        {{!-- <p>{{code}}</p> --}}
+        <p>{{stock}}</p>
+        <p>{{category}}</p>
+        <button data-id="{{id}}" id="agregar-producto">add to cart</button>
+        <hr>
+    </div>
+
+{{/each}}
+
+<a href="http://localhost:8080/products?page=1">First</a>
+
+{{#if hasPrevPage}}
+    <a href="http://localhost:8080/products?page={{prevPage}}">Prev</a>
+{{/if}}
+
+{{#if hasNextPage}}
+    <a href="http://localhost:8080/products?page={{nextPage}}">Next</a>
+{{/if}}
+
+<a href="http://localhost:8080/products?page={{totalPages}}">Last</a>
+
+<script src="js/products.js"></script>
