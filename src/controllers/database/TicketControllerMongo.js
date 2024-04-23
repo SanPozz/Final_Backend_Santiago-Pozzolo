@@ -1,11 +1,11 @@
-import { ticketService } from "../../services/ticket.service.js";
+import { ticketService } from "../../services/tickets.service.js";
 
 
 export class TicketControllerMongo {
 
     static async createTicket(req,res) {
 
-        const  ticket  = req.body;
+        const ticket = req.body;
 
         ticketService.createTicket(ticket)
         .then((data) => {

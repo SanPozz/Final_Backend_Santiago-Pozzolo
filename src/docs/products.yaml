@@ -3,215 +3,230 @@ paths:
   /api/products:
     get:
       summary: Obtiene todos los productos
-      tags: 
-        - Product
-      responses: 
+      tags:
+        - Products
+      responses:
         "200":
-          description: Productos obtenidos
+          description: Lista de productos
           content:
-            aplication/json:
+            application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#components/schemas/Producto"
+                  $ref: "#components/schemas/Product"
         "404":
-            description: No se encontraron los productos
-
+          description: No se encontraron productos
+        "500":
+          description: Error interno del servidor
     post:
-      summary: Crear producto
+      summary: Crea un nuevo producto
       tags:
-        - Product
-      responses:
-        "200":
-          description: Producto creado exitosamente
-        "404":
-          description: Error al crear el producto
-
+        - Products
       requestBody:
         required: true
         content:
-          aplication/json:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createProduct"
+      responses:
+        "200":
+          description: Creado exitosamente
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#components/requestBodies/createProduct"
-
-
+                $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor
   /api/products/{pid}:
-      get:
-        summary: Obtiene un producto por ID
-        tags: 
-          - Product
-        parameters:
+    get:
+      summary: Obtiene un producto por ID
+      tags:
+        - Products
+      parameters:
         - name: pid
           in: path
+          description: ID del producto
           required: true
-          description: ID del producto que se solicita
           schema:
-            $type: String
-        responses: 
-          "200":
-            description: Producto obtenido
-          "400":
-            description: ID Invalido
-          "404":
-            description: Producto inexistente
-      put:
-        summary: Actualiza un producto por ID
-        tags:
-          - Product
-        parameters:
-          - name: pid
-            in: path
-            required: true
-            description: ID del producto que se quiere actualizar
-            schema:
-              type: string
-          - name: body
-            in: body
-            required: true
-            description: Datos del producto a actualizar
+            type: string
+      responses:
+        "200":
+          description: Creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "404":
+          description: No se encontró el producto por ese ID
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualiza un producto por ID
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
             schema:
               $ref: "#components/requestBodies/updateProduct"
-        responses:
-          "200":
-            description: Producto actualizado exitosamente
-          "404":
-            description: No se encontró el producto por ese ID
-          "500":
-            description: Error interno del servidor
-      delete:
-        summary: Elimina un producto por ID
-        tags:
-          - Product
-        parameters:
-          - name: pid
-            in: path
-            required: true
-            description: ID del producto que se quiere eliminar
-            schema:
-              type: string
-        responses:
-          "200":
-            description: Producto eliminado exitosamente
-          "401":
-            description: Bad request
-          "404":
-            description: No se encontró el producto por ese ID
-
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Creado exitosamente
+        "404":
+          description: No se encontró el producto por ese ID
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Elimina un producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado exitosamente
+        "404":
+          description: No se encontró el producto por ese ID
+        "500":  
+          description: Error interno del servidor
 components:
   schemas:
-    Producto:
+    Product:
       type: object
       properties:
         _id:
           type: ObjectId
-          description: ID autogenerado por Mongo
-        title: 
+          description: ID del producto
+        title:
           type: string
           description: Nombre del producto
-        thumbnail:
-          type: array
-          description: Imagenes del producto
         description:
           type: string
-          description: Descripcion del producto
-        stock: 
-          type: number
-          description: Cantidad disponible del producto
+          description: Descripción del producto
         price:
           type: number
           description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de productos
+        thumbnail:
+          type: array
+          description: Imagenes del producto
+          items:
+            type: string
         code:
           type: string
-          description: Código de referencia del producto
-        status:
-          type: boolean
-          description: true or false
-        category: 
-          type: string
-          description: Categoría del producto
+          description: Código del producto
         owner:
           type: string
           description: Creador del producto
+          default: admin
+        category:
+          type: string
+          description: Categoría del producto
+        status:
+          type: boolean
+          description: Estatus del producto
+          default: true
+      required:
+        - title
+        - description
+        - price
+        - stock
+        - code
+        - category
       example:
         _id: ObjectId("64cff6b08df0d0bd14dd22a1")
-        title: Samnsung TV
-        thumbnail: [urls]
-        description: Samsung TV 50 pulgadas
-        stock: 500
-        price: 2000
-        code: abc123
+        title: "Product 1"
+        description: "Description"
+        price: 300
+        thumbnail: []
+        code: "1234"
+        stock: 10
+        category: "Category"
         status: true
-        category: TV
-        owner: Admin
+        owner: "Admin"
+
   requestBodies:
-    createProduct:
+    updateProduct:
       type: object
       properties:
-        title: 
+        title:
           type: string
           description: Nombre del producto
-        thumbnail:
-          type: array
-          description: Imagenes del producto
         description:
           type: string
-          description: Descripcion del producto
-        stock: 
-          type: number
-          description: Cantidad disponible del producto
+          description: Descripción del producto
         price:
           type: number
           description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad de productos
+        thumbnail:
+          type: array
+          description: Imagenes del producto
+          items:
+            type: string
         code:
           type: string
-          description: Código de referencia del producto
+          description: Código del producto
         category:
           type: string
           description: Categoría del producto
       example:
-        title: Samnsung TV
-        thumbnail: [urls]
-        description: Samsung TV 50 pulgadas
-        stock: 500
-        price: 2000
-        code: abc123
-        category: TV
-    updateProduct:
+        title: "Product 1"
+        description: "Description"
+        price: 300
+        thumbnail: []
+        code: "1234"
+        stock: 10
+        category: "Category"
+  
+    createProduct:
       type: object
       properties:
-        title: 
+        title:
           type: string
           description: Nombre del producto
-        thumbnail:
-          type: array
-          description: Imagenes del producto
         description:
           type: string
-          description: Descripcion del producto
-        stock: 
-          type: number
-          description: Cantidad/stock disponible del producto
+          description: Descripción del producto
         price:
           type: number
           description: Precio del producto
+        thumbnail:
+          type: array
+          description: Imagenes del producto
+          items:
+            type: string
         code:
           type: string
-          description: Código de referencia del producto
+          description: Código del producto
+        stock:
+          type: number  
+          description: Cantidad de productos
         category:
           type: string
-          description: Categoría del Producto
-        owner:
-          type: string
-          description: Admin o Premium
+          description: Categoría del producto
       example:
-        title: Samnsung TV
-        thumbnail: [urls]
-        description: Samsung TV 50 pulgadas
-        stock: 500
-        price: 2000
-        code: abc123
-        category: TV
-        owner: Admin
-      
+        title: "Product 1"
+        description: "Description"
+        price: 300
+        thumbnail: []
+        code: "1234"
+        stock: 10
+        category: "Category"

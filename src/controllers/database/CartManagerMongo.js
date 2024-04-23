@@ -138,7 +138,7 @@ export class CartManagerMongo {
             await cart.save()
 
             res.setHeader('Content-Type', 'application/json');
-            res.status(200).send({ status: `Product with ${pid} was deleted` })
+            res.status(200).send({ status: `Product Deleted Successfully` })
 
     
         } catch (error) {

@@ -8,9 +8,7 @@ import bcrypt from 'bcrypt'
 import { extractjwtFromCookie, logger } from '../utils.js'
 import { configENV } from './configDotEnv.js'
 
-import User from '../dao/models/users.models.js'
-import Cart from '../dao/models/carts.models.js'
-
+import { userService } from '../services/users.service.js'
 import { cartService } from '../services/carts.service.js'
 
 import { UserReadDTO } from '../dto/usersDTO.js'
@@ -39,7 +37,7 @@ export const initializatePassport = () => {
                 // return res.redirect('/register?error=All fields are required');
             }
 
-            const userExist = await User.findOne({email});
+            const userExist = await userService.getUserByEmail(email);
 
             if (userExist) {
                 // logger.info('User already exists');
@@ -107,7 +105,7 @@ export const initializatePassport = () => {
                 }
             }
             
-            let userExist = await User.findOne({email: username});
+            let userExist = await userService.getUserByEmail(username);
 
             // console.log(userExist);
 
@@ -142,7 +140,7 @@ export const initializatePassport = () => {
     async (accessToken, refreshToken, profile, done) => {
         try {
             // console.log(profile);
-            let user = await User.findOne({email: profile._json.email}).lean();
+            let user = await userService.getUserByEmailandLean(profile._json.email);
 
             if (!user) {
                 const cart = await cartService.createCart();

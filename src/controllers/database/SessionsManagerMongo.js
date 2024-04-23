@@ -1,7 +1,7 @@
 import {UserReadDTO} from "../../dto/usersDTO.js";
 import passport from "passport";
 import { generateToken } from "../../utils.js";
-import User from "../../dao/models/users.models.js";
+import { userService } from "../../services/users.service.js";
 import jwt from "jsonwebtoken";
 import { configENV } from "../../config/configDotEnv.js";
 import bcrypt from "bcrypt";
@@ -44,7 +44,7 @@ export class SessionsManagerMongo {
         try {
             let email = req.user.email
 
-            const user = await User.findOne({email: email});
+            const user = await userService.getUserByEmail(email);
     
             user.last_connection = new Date().toLocaleString();
             user.save()
@@ -94,7 +94,7 @@ export class SessionsManagerMongo {
 
             if (email) {
 
-                const user = await User.findOne({ email });
+                const user = await userService.getUserByEmail(email);
 
                 
                 if (password == confirmPassword) {

@@ -84,7 +84,7 @@ export class ProductManagerMongo {
         } catch (error) {
             logger.error({error})
             res.setHeader('Content-Type', 'application/json');
-            res.status(400).send({ Error: "Error creating product: " + error});
+            res.status(500).send({ Error: "Error creating product: " + error});
         }
     }
 
