@@ -70,10 +70,10 @@ finishButton.addEventListener('click', async (e) => {
 
             if (ticket.productsPurchased.length > 0) {
                 const response2 = await axios.post(`api/tickets/generate-ticket`, data.ticketToAdd);
-                console.log(response2.data)
+
 
                 const response3 = await axios.post(`api/mailing/purchase/${userCartId}`, data.ticketToAdd);
-                console.log(response3.data)
+
                 alert('Se ha generado el ticket con éxito');
                 location.reload();
             } else {
@@ -93,7 +93,7 @@ document.addEventListener('click', async (e) => {
         const userCartId = await obtenerCarritoUsuarioActual();
         const productId = e.target.dataset.id;
         const responseDelete = await axios.delete(`api/carts/${userCartId}/products/${productId}`);
-        console.log(responseDelete.data)
+
         location.reload();
     }
 })
@@ -101,7 +101,7 @@ document.addEventListener('click', async (e) => {
 cleanCart.addEventListener('click', async (e) => {
     const userCartId = await obtenerCarritoUsuarioActual();
     const responseDelete = await axios.delete(`api/carts/${userCartId}`);
-    console.log(responseDelete.data)
+
     location.reload();
 })
 

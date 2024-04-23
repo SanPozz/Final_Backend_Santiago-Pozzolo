@@ -24,25 +24,18 @@ export const initializatePassport = () => {
 
             let {first_name, last_name, age, email, password} = req.body;
             age = parseInt(age);
-            console.log([
-                first_name,
-                last_name,
-                age,
-                email,
-                password
-            ]);
     
             if (!first_name || !last_name || !username || !age || !password) {
                 return done(null, false, {message: 'All fields are required'});
-                // return res.redirect('/register?error=All fields are required');
+
             }
 
             const userExist = await userService.getUserByEmail(email);
 
             if (userExist) {
-                // logger.info('User already exists');
+
                 return done(null, false, {message: 'User already exists'});
-                // return res.redirect('/register?error=Email already registered');
+
             }
 
             const hashedPassword = bcrypt.hashSync(password, 10);
@@ -50,11 +43,10 @@ export const initializatePassport = () => {
             let user;
 
             const newCart = await cartService.createCart();
-            console.log(newCart);
 
             const cartID = newCart._id;
 
-            user = await User.create({
+            user = await userService.createUser({
                 first_name,
                 last_name,
                 age,
@@ -79,13 +71,13 @@ export const initializatePassport = () => {
         try {
 
             if (!username || !password) {
-                // return res.redirect('/login?error=All%20fields%20are%20required')
+
                 return done(null, false);
             }
 
             if (username == "adminCoder@coder.com") {
                 const adminPassword = bcrypt.hashSync('adminCod3r123', 10);
-                console.log(adminPassword);
+
 
                 const validPassword = bcrypt.compareSync(password, adminPassword);
 
@@ -98,26 +90,25 @@ export const initializatePassport = () => {
                     
                     return done(null, adminUser);
 
-                    // return res.redirect('/products');
+
                 } else {
-                    // return res.redirect('/login?error=Invalid%20Credentials')
+
                     return done(null, false);
                 }
             }
             
             let userExist = await userService.getUserByEmail(username);
 
-            // console.log(userExist);
 
             if (!userExist) {
-                // return res.redirect('/login?error=Invalid%20Credentials')
+
                 return done(null, false);
             }
 
             const validPassword = bcrypt.compareSync(password, userExist.password);
 
             if (!validPassword) {
-                // return res.redirect('/login?error=Invalid%20Credentials')
+
                 return done(null, false);
             }
 
@@ -126,7 +117,6 @@ export const initializatePassport = () => {
             return done(null, userExist);
 
         } catch (error) {
-            // console.log(4);
             done(error, null)
         }
     }))
@@ -139,7 +129,7 @@ export const initializatePassport = () => {
     },
     async (accessToken, refreshToken, profile, done) => {
         try {
-            // console.log(profile);
+
             let user = await userService.getUserByEmailandLean(profile._json.email);
 
             if (!user) {
@@ -150,8 +140,6 @@ export const initializatePassport = () => {
                 const email = profile._json.email;
                 const user_cart = cart._id;
 
-                console.log(user_cart);
-
                 const newUser = {
                     first_name: firstName,
                     last_name: lastName,
@@ -161,7 +149,7 @@ export const initializatePassport = () => {
                     user_cart: user_cart
                 }
 
-                user = await User.create(newUser)
+                user = await userService.createUser(newUser)
 
             }
 
@@ -179,7 +167,6 @@ export const initializatePassport = () => {
     },
     async (jwtPayload, done) => {
         try {
-            // console.log(jwtPayload);
             return done(null, jwtPayload)
         } catch (error) {
             return done(error, null)

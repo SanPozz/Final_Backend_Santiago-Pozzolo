@@ -1,7 +1,5 @@
 import { Router } from "express";
 
-import { authorizationStrategy } from "../utils.js";
-
 import { MailingControllerMongo } from "../controllers/database/MailingControllerMongo.js";
 
 const routerMailing = Router();

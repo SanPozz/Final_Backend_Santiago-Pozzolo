@@ -4,7 +4,7 @@ import passport from "passport";
 
 import { SessionsManagerMongo } from "../controllers/database/SessionsManagerMongo.js";
 
-import { authorizationStrategy, checkRol } from "../utils.js";
+import { authorizationStrategy} from "../utils.js";
 
 const routerSessions = Router();
 

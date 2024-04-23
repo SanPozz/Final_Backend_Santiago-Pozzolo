@@ -1,6 +1,6 @@
 import { productService } from "../../services/products.service.js";
 import { CustomError, ErrorCodes, logger } from "../../utils.js";
-import mongoose from "mongoose";
+
 
 export class ProductManagerMongo {
     constructor(){}

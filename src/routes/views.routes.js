@@ -7,7 +7,6 @@ import { generateProductMocks } from "../dao/mocks/mockProducts.js";
 
 import { authorizationStrategy, isntLoggedIn } from "../utils.js";
 
-import passport from "passport";
 
 const viewsRouter = Router();
 
@@ -56,7 +55,7 @@ viewsRouter.get('/carts/:cid', async (req, res) => {
     const { cid } = req.params;
 
     const cart = await Cart.findById(cid).populate('products.id_prod').lean();
-    console.log(cart.products);
+
     res.status(200).render('products', {
         cart: cart,
         products: cart.products
@@ -96,9 +95,7 @@ viewsRouter.get('/mockingproducts', async (req, res) => {
         products: fakeProducts
     })
 
-    // res.status(200).render('mockingproducts', {
-    //     products
-    // })
+
 })
 
 viewsRouter.get('/resetpassform', async (req, res) => {

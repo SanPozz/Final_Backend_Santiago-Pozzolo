@@ -1,7 +1,7 @@
 import { cartService } from "../../services/carts.service.js";
 import { productService } from "../../services/products.service.js";
 import { CustomError, ErrorCodes } from "../../utils.js";
-import { generateTicketCode, logger, transporter } from "../../utils.js";
+import { generateTicketCode, logger } from "../../utils.js";
 
 
 export class CartManagerMongo {
@@ -77,7 +77,6 @@ export class CartManagerMongo {
 
             } else {
 
-                console.log(cart)
                 cart.products.push({ product_id: product._id, quantity: 1 });
             }
 
@@ -226,15 +225,10 @@ export class CartManagerMongo {
                         await dbProduct.save();
 
                         total += dbProduct.price * element.quantity;
-                        console.log(total);
 
                         productsPurchased.push({ product_id: element.product_id.toString(), quantity: element.quantity });
                     }
                 }
-
-            console.log("products not purchased: " + JSON.stringify(productsNotPurchased))
-            console.log("products purchased: " + JSON.stringify(productsPurchased))
-
                 
             if (productsNotPurchased.length > 0) {
                 cart.products = productsNotPurchased;

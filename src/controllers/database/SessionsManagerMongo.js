@@ -80,18 +80,14 @@ export class SessionsManagerMongo {
 
     static async resetPassword(req, res) {
         const { password, confirmPassword } = req.body;
-        console.log(req.body);
+
         try {
             const token = req.query.token
 
             const info = jwt.verify(token, configENV.SECRET_JWT);
 
             const email = info.email
-
-            console.log(info);
-
-            console.log(email);
-
+            
             if (email) {
 
                 const user = await userService.getUserByEmail(email);

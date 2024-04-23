@@ -6,39 +6,6 @@ import passport from 'passport';
 import nodemailer from 'nodemailer'
 import { productService } from './services/products.service.js';
 
-export const authViews = (req, res, next) => {
-    if (req.session.user) {
-        next();
-    } else {
-        res.redirect('/login');
-    }
-}
-
-export const authLogged = (req, res, next) => {
-    if (req.session.user) {
-        res.redirect('/?error=You are already logged in');
-    } else {
-        next();
-    }
-}
-
-export const authUser = (req, res, next) => {
-    if (req.session.user.rol == 'user') {
-        next();
-    } else {
-        res.redirect('/login');
-    }
-}
-
-export const authAdmin = (req, res, next) => {
-    if (req.session.user.rol == 'admin') {
-        next();
-    } else {
-        res.setHeader('Content-Type', 'application/json');
-        res.status(403).send({ error: 'Unauthorized' });
-    }
-}
-
 export const generateTicketCode = () =>{
     const id = crypto.randomBytes(20).toString('hex');
     return id
@@ -139,7 +106,6 @@ export const logger = winston.createLogger({
 
 
 export const generateToken = (user) => {
-    // console.log(user);
     return jwt.sign(user, configENV.SECRET_JWT, { expiresIn: '24h' });
 }
 
@@ -148,7 +114,6 @@ export const extractjwtFromCookie = (req, res) => {
     if(req.cookies.token){
         token = req.cookies.token
         logger.info(`Token extracted from cookie: ${token}`)
-        // console.log(`Token extracted from cookie: ${token}`)
         return token
     }
     return token
@@ -202,10 +167,8 @@ export const transporter = nodemailer.createTransport({
 export const checkStock = async (pid, quantity, notPurchased, purchase_amount) => {
     const prodID = pid.toString();
     const product = await productService.getProductByID(prodID);
-    console.log(prodID)
     
     if(product.stock < quantity){
-        console.log("first")
         notPurchased.push({id: product._id, quantity: product.quantity})
         
     } else {
@@ -216,8 +179,6 @@ export const checkStock = async (pid, quantity, notPurchased, purchase_amount) =
 }
 
 export const isntLoggedIn = (req, res, next) => {
-    console.log(req.cookies.token)
-
     if(req.cookies.token) {
         return res.redirect('/products?error=You are already logged in');
     }

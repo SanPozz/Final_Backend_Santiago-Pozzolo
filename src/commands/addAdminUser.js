@@ -1,37 +1,44 @@
 import { Command } from "commander";
-import {cartService} from "../services/carts.service.js";
-import {userService} from "../services/users.service.js";
+import { cartService } from "../services/carts.service.js";
+import { userService } from "../services/users.service.js";
 
-const createUserAdmin = new Command("add-admin-user")
-    .description("Add an admin user");
+const program = new Command();
 
-createUserAdmin
-    .option("-n, --name <name>", "Name")
-    .option("-l, --lastname <lastname>, Lastname")
-    .option("-e, --email <email>", "Email")
-    .option("-p, --password <password>", "Password")
-    .option("-a, --age <age>", "Age")
-    .action(async (name, lastname, email, password, age) => {
-        try {
+program
+  .option("-n, --name <name>", "Name of the user")
+  .option("-l, --lastname <lastname>", "Lastname of the user")
+  .option("-e, --email <email>", "Email of the user")
+  .option("-p, --password <password>", "Password of the user")
+  .option("-a, --age <age>", "Age of the user")
+  .parse(process.argv);
 
-            const cart = await cartService.createCart();
+const { name, lastname, email, password, age } = program.opts();
 
-            const cartId = cart._id;
+if (!name || !lastname || !email || !password || !age) {
+  console.log("All fields are required");
+  process.exit(1);
+}
 
-            const user = {
-                first_name: name,
-                last_name: lastname,
-                email: email,
-                age: age,
-                password: password,
-                rol: 'admin',
-                user_cart: cartId
-            }
-            await userService.createUser(user);
-            console.log('User created successfully');
-        } catch (error) {
-            console.log(error);
-        }
-    })
+async function createUser() {
+  try {
+    const userCart = await cartService.createCart();
 
-createUserAdmin.parse();
+    const user = {
+      first_name: name,
+      last_name: lastname,
+      email: email,
+      password: password,
+      age: age,
+      rol: "admin",
+      user_cart: userCart._id,
+    };
+
+    await userService.createUser(user);
+    console.log("User created successfully");
+  } catch (error) {
+    console.error("Error creating user:", error);
+    process.exit(1);
+  }
+}
+
+createUser();

@@ -3,14 +3,14 @@ async function agregarProductoAlCarrito(productId) {
     if (userCartId) {
         const response = await axios.post(`api/carts/${userCartId}/products/${productId}`);
 
-        console.log(response.data.status)
+
     }
 }
 
 document.addEventListener("click", (e) => {
     if (e.target.id === 'agregar-producto') {
         const productId = e.target.dataset.id;
-        console.log(productId)
+
         agregarProductoAlCarrito(productId);
     }
 });

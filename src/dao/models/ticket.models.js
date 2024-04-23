@@ -3,17 +3,17 @@ import { Schema, model } from "mongoose";
 
 const ticketSchema = new Schema({
     code: {
-        type: String, // generatedcode
+        type: String, 
         unique: true
     },
     purchase_datetime: {
-        type: String //datetime
+        type: String 
     },
     amount: {
-        type: Number //total
+        type: Number 
     },
     purchaser: {
-        type: String //email
+        type: String 
     },
     productsPurchased: {
         type: [

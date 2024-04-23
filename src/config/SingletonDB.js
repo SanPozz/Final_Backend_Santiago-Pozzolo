@@ -10,12 +10,12 @@ export class SingletonDB{
     static connectDB(url){
         if(this.#instance){
             logger.error(`Database already connected`)
-            // console.log(`Database already connected`)
+
             return this.#instance
         }
         this.#instance=new SingletonDB(url)
         logger.info(`Database Connected!`)
-        // console.log(`Database Connected!`)
+
         return this.#instance
 
     }

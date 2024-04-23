@@ -8,10 +8,6 @@ import swaggerUi from 'swagger-ui-express';
 
 import { engine } from 'express-handlebars';
 
-import { Server } from 'socket.io';
-
-import Product from './dao/models/products.models.js';
-import Message from './dao/models/messages.models.js';
 
 import routerProducts from './routes/products.routes.js';
 import routerTickets from './routes/tickets.routes.js';
@@ -28,7 +24,8 @@ import cookieParser from 'cookie-parser';
 
 import { configENV } from "./config/configDotEnv.js"
 import { SingletonDB } from './config/SingletonDB.js';
-import { authUser, addLogger, logger } from './utils.js';
+import { addLogger, logger } from './utils.js';
+import { initializeSocket } from './config/socketIO.js';
 
 const app = express();
 const PORT = configENV.PORT;
@@ -75,53 +72,10 @@ app.use('/api/users', routerUsers);
 app.use('/api/tickets', routerTickets);
 app.use('/', viewsRouter);
 
-const server = app.listen(PORT, () => {
+export const server = app.listen(PORT, () => {
     logger.info(`Server on Port: ${PORT}`);
-    // console.log(`Server on Port: ${PORT}`);
 })
+
+initializeSocket(server)
 
 SingletonDB.connectDB(configENV.MONGO_URL);
-
-const io = new Server(server);
-io.on('connection', socket => {
-    logger.info('Conexión con Socket.io');
-    // console.log('Conexion con Socket.io');
-
-    //Products
-    socket.on('loadProducts', async () => {
-        const products = await Product.find().lean();
-        socket.emit('sentProducts', products);
-    })
-    
-    socket.on('addProduct', async productToAdd => { 
-        // console.log(productToAdd);
-        await Product.create(productToAdd);
-        const products = await Product.find().lean();
-        socket.emit("sentProducts", products);
-    })
-    
-    socket.on('productToDelete', async productIdDelete => {
-        await Product.findByIdAndDelete(productIdDelete)
-        const products = await Product.find().lean();
-        socket.emit("sentProducts", products);
-    })
-
-    //Chat app
-
-    socket.on('loadMessages', async () => {
-        const arrayMessages = await Message.find();
-        socket.emit('messages', arrayMessages)
-    })
-    
-    socket.on('sentMessage', authUser, async info => {
-        console.log(info);
-        const { userEmail, message } = info;
-        await Message.create({
-            userEmail,
-            message
-        })
-    
-        const arrayMessages = await Message.find();
-        socket.emit('messages', arrayMessages)
-    })
-})

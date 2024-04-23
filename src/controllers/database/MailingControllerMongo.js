@@ -8,10 +8,8 @@ export class MailingControllerMongo {
 
     static async recoverPassword(req, res) {
         const { email } = req.body;
-        console.log(email);
 
         const token = generateTokenResetPass(email);
-        console.log(token);
 
         try {
             transporter.sendMail(
@@ -274,7 +272,7 @@ export class MailingControllerMongo {
           return res.redirect('/login');
 
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({ error: error.message });
         }
     }
 
@@ -283,10 +281,8 @@ export class MailingControllerMongo {
       try {
 
         const { cid } = req.params;
-        console.log(cid)
 
         const cart = await cartService.getCartByID(cid);
-        console.log(cart)
 
         if(!cart) {
             throw new CustomError(ErrorCodes.CART_NOT_FOUND.message, ErrorCodes.CART_NOT_FOUND.name, ErrorCodes.CART_NOT_FOUND.code);
@@ -298,7 +294,6 @@ export class MailingControllerMongo {
             throw new CustomError(ErrorCodes.MISSING_PARAMETERS.message, ErrorCodes.MISSING_PARAMETERS.name, ErrorCodes.MISSING_PARAMETERS.code);
         }
 
-        console.log(ticket)
 
         transporter.sendMail(
           {
@@ -323,7 +318,7 @@ export class MailingControllerMongo {
       return res.status(200).send({message: 'Email sent successfully!'});
 
       } catch (error) {
-        // logger.error(JSON.stringify(error))
+
         return res.status(400).send(JSON.stringify(error));
       }
     }
