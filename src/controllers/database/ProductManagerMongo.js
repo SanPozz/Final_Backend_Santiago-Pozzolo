@@ -47,7 +47,7 @@ export class ProductManagerMongo {
 
     
             if (product) {
-                res.send(product);
+                res.status(200).send(product);
 
             } else {
                 throw new CustomError(ErrorCodes.PRODUCT_NOT_FOUND.message, ErrorCodes.PRODUCT_NOT_FOUND.name, ErrorCodes.PRODUCT_NOT_FOUND.code);
@@ -79,7 +79,7 @@ export class ProductManagerMongo {
             await productService.createProduct(productToAdd);
 
             res.setHeader('Content-Type', 'application/json');
-            res.status(200).send({ status: "Product Created: " + productToAdd });
+            res.status(200).send( productToAdd );
 
         } catch (error) {
             logger.error({error})
@@ -144,7 +144,7 @@ export class ProductManagerMongo {
             if (productUpdated) {
                 logger.info({productUpdated})
                 res.setHeader('Content-Type', 'application/json');
-                res.status(200).send({ status: "Product Updated: " + productToUpdate });
+                res.status(200).send( productToUpdate );
             } else {
                 throw new CustomError(ErrorCodes.INTERNAL_SERVER_ERROR.message, ErrorCodes.INTERNAL_SERVER_ERROR.name, ErrorCodes.INTERNAL_SERVER_ERROR.code);
             }
@@ -185,7 +185,7 @@ export class ProductManagerMongo {
                 
                 if (productToDelete) {
                     res.setHeader('Content-Type', 'application/json');
-                    res.status(200).send({ status: "Product Deleted: " + productToDelete })
+                    res.status(200).send(productToDelete)
                 } else {
                     throw new CustomError(ErrorCodes.INTERNAL_SERVER_ERROR.message, ErrorCodes.INTERNAL_SERVER_ERROR.name, ErrorCodes.INTERNAL_SERVER_ERROR.code);
                 }
